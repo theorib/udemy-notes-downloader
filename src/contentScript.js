@@ -16,6 +16,7 @@ import formatTag from './helpers/formatTag';
 
 // DECLARE html selectors
 const ENCLOSING_ELEMENT_SELECTOR = 'lecture-bookmark-v2--row--';
+const COURSE_TITLE_SELECTOR = 'curriculum-item-view--course-title--';
 export const NOTE_CONTENT_SELECTOR = 'lecture-bookmark-v2--content-container--';
 export const NOTE_SECTION_NAME_SELECTOR = 'lecture-bookmark-v2--section--';
 export const NOTE_LESSON_NAME_SELECTOR = 'ud-text-sm';
@@ -44,6 +45,7 @@ function sortedNodeList(nodeList, reverse = false) {
 // event:  DOWNLOAD
 function handleDownloadEvent(request) {
   let enclosing_tags = document.querySelectorAll(`[class^='${ENCLOSING_ELEMENT_SELECTOR}']`);
+  const courseTitle_tag = document.querySelector(`[class^='${COURSE_TITLE_SELECTOR}']`);
 
   /* Notes not found */
   if (enclosing_tags.length === 0) {
@@ -53,6 +55,13 @@ function handleDownloadEvent(request) {
   }
   let newParentNode = document.createElement('div');
   let sortOrder = request.payload['reverseSort'] || false;
+  let documentTitle = request.payload['documentTitle'] || false;
+
+  if (courseTitle_tag && documentTitle) {
+    const courseTitleElement = document.createElement('h2');
+    courseTitleElement.innerText = courseTitle_tag.innerText;
+    newParentNode.append(courseTitleElement);
+  }
 
   sortedNodeList(enclosing_tags, sortOrder).forEach((tag) => {
     // Format the notes tag with code formatting as well as optional note metadata title

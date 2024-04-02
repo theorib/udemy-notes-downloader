@@ -6,6 +6,7 @@ import events from './helpers/events';
 
 (function () {
   const downloadBtn = document.querySelector('#download-btn');
+  const addDocumentTitle = document.querySelector('#document-title');
   const sortOrder = document.querySelector('#sort-order');
   const addHorizontalRule = document.querySelector('#horizontal-rule');
   const addNoteMetadata = document.querySelector('#note-metadata');
@@ -46,12 +47,14 @@ import events from './helpers/events';
   }
 
   function generatePayload() {
+    let documentTitle = addDocumentTitle.checked;
     let reverseSortOrder = sortOrder.checked;
     let horizontalRule = addHorizontalRule.checked;
     let noteMetadata = addNoteMetadata.checked;
     let codeLang = validCodeLang.includes(codeFormatLanguage.value) ? codeFormatLanguage.value : 'javaScript';
 
     return {
+      documentTitle: documentTitle,
       reverseSort: reverseSortOrder,
       addHorizontalRule: horizontalRule,
       noteMetadata: noteMetadata,
